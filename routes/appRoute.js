@@ -2,21 +2,16 @@ const express = require('express')
 const route = express.Router()
 const {auth} = require('../middleware/authmiddleware')
 const User = require('../models/User')
+const {AppController} = require('../controllers/noteappController')
+const path = '/noteapp' 
 
-route.get('/noteapp',auth,async(req,res)=>{
-  
-  try
-  {
-    const id = req.id
-    const notes = await User.findById(id,{notes:1,_id:0})
-    res.send(notes)
-    
-      
-  }
-  catch(error)
-  {
-      res.statusCode(404).send("Server Error")
-  }
+route.get(path,auth, AppController.getNotes)
 
-})
+route.post(path, auth, AppController.createNote )
+
+route.put(path, auth, AppController.updateNote)
+
+route.delete(path, auth, AppController.deleteNote)
+
+
 module.exports = route
