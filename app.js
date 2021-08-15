@@ -1,0 +1,13 @@
+const mongoose = require('mongoose')
+const path = require('path')
+require('./db/conn')
+require('dotenv').config({path:path.join(__dirname+"/../.env")})
+const User = require('./models/User')
+const express = require('express')
+const cors = require('cors')
+const app = express()
+app.use(express.json({}))
+app.use(cors())
+app.listen(process.env.PORT,()=>{
+    console.log(`Listening at port ${process.env.PORT}`)
+})
