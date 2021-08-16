@@ -1,15 +1,24 @@
 const mongoose = require('mongoose')
+const validator = require('validator');
 const user_schema = mongoose.Schema({
     name:{
         type:String,
-        required:[true,"Name can't be empty"]
+        required:[true,"Name can't be empty"],
+        minlength:[3,"Length of name should be more than 3"],
+        maxlength:[20,"Length of name should be less than 20"]
 
     },
     email:{
         type:String,
         required:[true,"Please enter email"],
         unique:true,
-        index:true
+        index:true,
+        validate: {
+            validator: (value) => {
+              return validator.isEmail(value);
+            },
+            message:"Please enter a valid email"
+          }
     },
     password:{
         type:String,

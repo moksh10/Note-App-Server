@@ -16,8 +16,6 @@ exports.auth = async (req,res,next) => {
             {
                  res.status(403).send("Invalid Authorization")
                   return
-                 
-
             }
             req.id = decoded.id
             next()

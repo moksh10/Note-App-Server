@@ -16,6 +16,11 @@ const updateUserInfo = async(req,res)=>{
     try{
         
         const id = req.id
+        if(!req.body.newPassword)
+        {
+            res.status(400).send("Please enter new password")
+            return
+        }
         const salt = await bcrypt.genSalt()
         const password = await bcrypt.hash(req.body.newPassword,salt)
         const result = await User.findByIdAndUpdate(id,{password:password})

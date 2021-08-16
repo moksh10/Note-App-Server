@@ -12,6 +12,14 @@ const createToken = (id) =>{
 exports.login = async (req,res) => {
    try
    {
+    if(!req.body.email||!req.body.password)
+    {
+        
+        res.status(400).send("Please enter email and password")
+        return
+
+    }
+
     const {email, password} = req.body
     const info = await User.find({email},{_id:1,password:1})
     if(info.length===0)
@@ -28,12 +36,12 @@ exports.login = async (req,res) => {
         return
 
     }
-    res.status(403).send("Incorrect Password")
+    res.status(403).send("Incorrect Email or Password")
 
    }
    catch(error)
    {
-       res.status(500).send(error.message)
+       res.status(500).send("Server Error")
    }
 
     

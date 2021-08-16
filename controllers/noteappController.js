@@ -16,7 +16,11 @@ const getNotes = async(req,res)=>{
 }    
 const createNote = async(req,res)=>{
     try{
-        
+        if(!req.body.heading||!req.body.content)
+        {
+            res.status(400).send("Please enter note heading and content")
+            return
+        }
       const id = req.id
       const result = await User.findById(id,{notes:1,_id:0})
       const notes = result.notes
@@ -35,9 +39,27 @@ const updateNote = async(req,res)=>{
     try{
         
         const id = req.id
+        if(req.body.idx===undefined)
+        {
+            res.status(400).send("Please select note to be updated")
+            return
+
+        }
+        if(!req.body.heading||!req.body.content)
+        {
+            res.status(400).send("Please enter note heading and content")
+            return
+        }
         const idx = req.body.idx
         const result = await User.findById(id,{notes:1,_id:0})
         const notes = result.notes
+        if(idx>=notes.length)
+        {
+            
+            res.status(400).send("Selected note is not present in our database")
+            return
+
+        }
         notes[idx].heading = req.body.heading
         notes[idx].content = req.body.content
         const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}})
@@ -53,9 +75,22 @@ const deleteNote = async(req,res)=>{
     try{
         
         const id = req.id
+        if(req.body.idx===undefined)
+        {
+            res.status(400).send("Please select note to be deleted")
+            return
+
+        }
         const idx = req.body.idx
         const result = await User.findById(id,{notes:1,_id:0})
         const notes = result.notes
+        if(idx>=notes.length)
+        {
+            
+            res.status(400).send("Selected note is not present in our database")
+            return
+
+        }
         notes.splice(idx,1);
         const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}})
         res.status(200).send({status:true})
