@@ -3,12 +3,9 @@ require('dotenv').config({path:path.join(__dirname+"/../.env")})
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const createToken = (id) =>{
-  return jwt.sign({id},process.env.JWT_PASSWORD,{
-        expiresIn:'3600s'
-        
-    })
 
+const createToken = (id) =>{
+  return jwt.sign({id},process.env.JWT_PASSWORD,{ expiresIn:process.env.JWT_EXPIRY})
 
 }
 

@@ -1,5 +1,4 @@
 const User = require("../models/User")
-
 const getNotes = async(req,res)=>{
   
     try
@@ -22,13 +21,13 @@ const createNote = async(req,res)=>{
       const result = await User.findById(id,{notes:1,_id:0})
       const notes = result.notes
       notes.push({heading:req.body.heading, content:req.body.content})
-      const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}},{new:true})
-      res.send(data)
+      const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}})
+      res.status(201).send({status:true})
         
     }
     catch(error)
     {
-        res.send(error.message)
+        res.status(500).send("Server Error")
     }
 
 }
@@ -41,13 +40,13 @@ const updateNote = async(req,res)=>{
         const notes = result.notes
         notes[idx].heading = req.body.heading
         notes[idx].content = req.body.content
-        const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}},{new:true})
-        res.send(data)
+        const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}})
+        res.status(200).send({status:true})
           
       }
       catch(error)
       {
-          res.statusCode(500).send("Server Error")
+          res.status(500).send("Server Error")
       }
 }
 const deleteNote = async(req,res)=>{
@@ -58,14 +57,14 @@ const deleteNote = async(req,res)=>{
         const result = await User.findById(id,{notes:1,_id:0})
         const notes = result.notes
         notes.splice(idx,1);
-        const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}},{new:true})
-        res.send(data)
-          
+        const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}})
+        res.status(200).send({status:true})
+           
       }
       catch(error)
       {
-          res.statusCode(500).send("Server Error")
+          res.status(500).send("Server Error")
       }
 
 }
-exports.AppController = {getNotes,createNote,updateNote,deleteNote}
+exports.AppController = {getNotes, createNote, updateNote, deleteNote}

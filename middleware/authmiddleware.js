@@ -14,7 +14,7 @@ exports.auth = async (req,res,next) => {
         jwt.verify(token,process.env.JWT_PASSWORD,(err,decoded)=>{
             if(err)
             {
-                 res.status(500).send("Invalid Authorization")
+                 res.status(403).send("Invalid Authorization")
                   return
                  
 
