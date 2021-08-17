@@ -5,29 +5,37 @@ require('dotenv').config({path:path.join(__dirname+"/../.env")})
 exports.auth = async (req,res,next) => {
     try
     {
-        if(!req.cookie.token)
+        if(!req.cookies)
         {
-            res.status(403).json({message:"Please Login"})
-            return
+            console.log(req)
+            return res.status(403).json({message:"Please Login"})
+            
         }
-        const token = req.cookie.token
+        const token = req.cookies.token
         jwt.verify(token,process.env.JWT_PASSWORD,(err,decoded)=>{
             if(err)
             {
-                 res.status(403).json({message:"Invalid Authorization"})
-                  return
+                return res.status(403).json({message:"Invalid Authorization"})
+                  
             }
             req.id = decoded.id
+            if(req.path==="/auth")
+            {
+                
             res.json({loggedIn:true})
+            return
+
+            }
             next()
+            return
         })
         
-        return
     
     }
     catch(error)
     {
         res.status(500).json({message:"Server Error"})
+        console.log(error)
 
     }
    

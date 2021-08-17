@@ -12,12 +12,17 @@ const createToken = (id) =>{
 exports.login = async (req,res) => {
    try
    {
-    if(!req.body.email||!req.body.password)
+    if(!req.body.email)
     {
         
-        res.status(400).json({message:"Please enter email and password"})
+        res.status(400).json({message:"Please enter email"})
         return
 
+    }
+    if(!req.body.password)
+    {
+        res.status(400).json({message:"Please enter password"})
+        return
     }
 
     const {email, password} = req.body
@@ -38,7 +43,7 @@ exports.login = async (req,res) => {
             sameSite:"strict",
             expires:new Date(Date.now() + process.env.JWT_EXPIRY_NUM)
         })
-        res.status(200).json({status:true})
+        res.status(200).json({loggedIn:true})
         return
 
     }

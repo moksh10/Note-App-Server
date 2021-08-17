@@ -5,6 +5,7 @@ const getUserInfo = async(req,res)=>{
         const id = req.id
         const result = await User.findById(id,{_id:0,name:1,email:1})
         res.json(result)
+        return
     
     }
     catch(error){
@@ -25,6 +26,7 @@ const updateUserInfo = async(req,res)=>{
         const password = await bcrypt.hash(req.body.newPassword,salt)
         const result = await User.findByIdAndUpdate(id,{password:password})
         res.json({updated:true})
+        return
 
 
     }
@@ -37,9 +39,8 @@ const updateUserInfo = async(req,res)=>{
 const logoutUser = async(req,res)=>{
     try{
 
-        res.clearCookie("token",
-       { path: '/'
-      })
+        res.clearCookie("token")
+        return 
 
     }
     catch(error)
