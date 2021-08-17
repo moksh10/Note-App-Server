@@ -5,7 +5,7 @@ exports.signup = async (req,res) =>{
     {
         if(!req.body.password)
         {
-            res.status(400).send("Please enter password")
+            res.status(400).json({message:"Please enter password"})
             return
 
         }
@@ -17,14 +17,14 @@ exports.signup = async (req,res) =>{
             password:password
         })
         const result = await newUser.save()
-        res.status(201).send("User account created")
+        res.status(201).json({created:true})
         
     }
     catch(error)
     {
         if(error.code === 11000)
         {
-            res.status(400).send("User already exists")
+            res.status(400).json({message:"User already exists"})
             return 
         }
         res.status(400).send(error.message.split(":")[2])

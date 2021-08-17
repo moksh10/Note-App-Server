@@ -1,24 +1,25 @@
 const User = require("../models/User")
+const message = {message:"Server Error"}
 const getNotes = async(req,res)=>{
   
     try
     {
       const id = req.id
       const result = await User.findById(id,{notes:1,_id:0})
-      res.send(result)
+      res.status(202).json(result)
       
         
     }
     catch(error)
     {
-        res.statusCode(500).send("Server Error")
+        res.status(500).json({message:"Server Error"})
     }
 }    
 const createNote = async(req,res)=>{
     try{
         if(!req.body.heading||!req.body.content)
         {
-            res.status(400).send("Please enter note heading and content")
+            res.status(400).json({message:"Please enter note heading and content"})
             return
         }
       const id = req.id
@@ -26,12 +27,12 @@ const createNote = async(req,res)=>{
       const notes = result.notes
       notes.push({heading:req.body.heading, content:req.body.content})
       const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}})
-      res.status(201).send({status:true})
+      res.status(201).send({created:true})
         
     }
     catch(error)
     {
-        res.status(500).send("Server Error")
+        res.status(500).json({message:"Server Error"})
     }
 
 }
@@ -41,13 +42,13 @@ const updateNote = async(req,res)=>{
         const id = req.id
         if(req.body.idx===undefined)
         {
-            res.status(400).send("Please select note to be updated")
+            res.status(400).json({message:"Please select note to be updated"})
             return
 
         }
         if(!req.body.heading||!req.body.content)
         {
-            res.status(400).send("Please enter note heading and content")
+            res.status(400).json({message:"Selected note is not present in our database"})
             return
         }
         const idx = req.body.idx
@@ -56,19 +57,19 @@ const updateNote = async(req,res)=>{
         if(idx>=notes.length)
         {
             
-            res.status(400).send("Selected note is not present in our database")
+            res.status(404).json({message:"Selected note is not present in our database"})
             return
 
         }
         notes[idx].heading = req.body.heading
         notes[idx].content = req.body.content
         const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}})
-        res.status(200).send({status:true})
+        res.status(202).json({updated:true})
           
       }
       catch(error)
       {
-          res.status(500).send("Server Error")
+          res.status(500).json(message)
       }
 }
 const deleteNote = async(req,res)=>{
@@ -77,7 +78,7 @@ const deleteNote = async(req,res)=>{
         const id = req.id
         if(req.body.idx===undefined)
         {
-            res.status(400).send("Please select note to be deleted")
+            res.status(400).json({message:"Please select note to be deleted"})
             return
 
         }
@@ -87,18 +88,18 @@ const deleteNote = async(req,res)=>{
         if(idx>=notes.length)
         {
             
-            res.status(400).send("Selected note is not present in our database")
+            res.status(404).json({message:"Selected note is not present in our database"})
             return
 
         }
         notes.splice(idx,1);
         const data = await User.findByIdAndUpdate(id,{$set:{notes:notes}})
-        res.status(200).send({status:true})
+        res.status(202).json({deleted:true})
            
       }
       catch(error)
       {
-          res.status(500).send("Server Error")
+          res.status(500).json(message)
       }
 
 }

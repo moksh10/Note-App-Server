@@ -15,7 +15,7 @@ exports.login = async (req,res) => {
     if(!req.body.email||!req.body.password)
     {
         
-        res.status(400).send("Please enter email and password")
+        res.status(400).json({message:"Please enter email and password"})
         return
 
     }
@@ -24,7 +24,7 @@ exports.login = async (req,res) => {
     const info = await User.find({email},{_id:1,password:1})
     if(info.length===0)
     {
-        res.status(404).send("User not found")
+        res.status(404).json({message:"User not found"})
         return
     }
     
@@ -32,16 +32,22 @@ exports.login = async (req,res) => {
     if(check)
     {
         const token = createToken(info[0]._id)
-        res.json({status:true,token:token})
+        res.cookie("token",token,{
+            httpOnly:true,
+            secure:true,
+            sameSite:"strict",
+            expires:new Date(Date.now() + process.env.JWT_EXPIRY_NUM)
+        })
+        res.status(200).json({status:true})
         return
 
     }
-    res.status(403).send("Incorrect Email or Password")
+    res.status(403).json({message:"Incorrect Email or Password"})
 
    }
    catch(error)
    {
-       res.status(500).send("Server Error")
+       res.status(500).json({message:"Server Error"})
    }
 
     
