@@ -6,14 +6,14 @@ const getNotes = async(req,res)=>{
     {
       const id = req.id
       const result = await User.findById(id,{notes:1,_id:0})
-    console.log(result)
       return res.status(202).json(result)
       
         
     }
     catch(error)
     {
-        console.log(message)
+        
+        res.status(500).json({message:"Server Error"})
     }
 }    
 const createNote = async(req,res)=>{
@@ -110,9 +110,9 @@ const deleteNote = async(req,res)=>{
       }
       catch(error)
       {
+          console.log(error)
           res.status(500).json(message)
       }
 
 }
- createNote, updateNote, deleteNote
 exports.AppController = {getNotes,createNote, updateNote, deleteNote}

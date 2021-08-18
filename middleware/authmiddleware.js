@@ -7,7 +7,6 @@ exports.auth = async (req,res,next) => {
     {
         if(!req.cookies)
         {
-            console.log(req)
             return res.status(403).json({message:"Please Login"})
             
         }

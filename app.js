@@ -22,6 +22,10 @@ app.use(loginRoute)
 app.use(authRoute)
 app.use(appRoute)
 app.use(accountRoute)
+app.use("*",(req,res)=>{
+    res.status(404).json({message:"No resource found"})
+
+})
 app.listen(process.env.PORT,()=>{
     console.log(`Listening at port ${process.env.PORT}`)
 })
