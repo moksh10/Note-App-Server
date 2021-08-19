@@ -45,7 +45,7 @@ exports.login = async (req,res) => {
             
         })
         
-        res.status(200).json({loggedIn:true,token:token})
+        res.status(200).json({loggedIn:true})
         return
 
     }
