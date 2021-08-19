@@ -41,7 +41,8 @@ exports.login = async (req,res) => {
             httpOnly:true,
             secure:true,
             sameSite:'lax',
-            expires:new Date(Date.now() + process.env.JWT_EXPIRY_NUM)
+            expires:new Date(Date.now() + process.env.JWT_EXPIRY_NUM),
+            proxy:true
         })
         res.status(200).json({loggedIn:true})
         return

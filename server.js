@@ -14,10 +14,11 @@ const accountRoute = require('./routes/accountRoute')
 app.use(compression())
 app.use(express.json({}))
 app.use(cookieParser())
-
+app.set('trust proxy', 1)
 app.use(cors({
     origin: "https://silly-fermat-351e67.netlify.app",
     credentials: true,
+    
     
 }))
 app.use(signupRoute)
