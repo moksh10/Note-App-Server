@@ -7,5 +7,5 @@ mongoose.connect(process.env.DB_CONNECT,{
     useFindAndModify:false,
     useUnifiedTopology:true
 }).then(()=>{
-    console.log("Connected")
+    
 })
