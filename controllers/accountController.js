@@ -39,7 +39,7 @@ const updateUserInfo = async(req,res)=>{
 const logoutUser = async(req,res)=>{
     try{
 
-        res.cookie("token",token,{
+        res.cookie("token","",{
             httpOnly:true,
             secure:true,
             sameSite:'none',
