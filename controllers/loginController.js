@@ -40,11 +40,12 @@ exports.login = async (req,res) => {
         res.cookie("token",token,{
             httpOnly:true,
             secure:true,
-            sameSite:'lax',
+            sameSite:'none',
             expires:new Date(Date.now() + process.env.JWT_EXPIRY_NUM),
-            proxy:true
+            
         })
-        res.status(200).json({loggedIn:true})
+        
+        res.status(200).json({loggedIn:true,token:token})
         return
 
     }
