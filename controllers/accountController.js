@@ -39,7 +39,13 @@ const updateUserInfo = async(req,res)=>{
 const logoutUser = async(req,res)=>{
     try{
 
-        res.clearCookie("token",{path:'/'})
+        res.cookie("token",token,{
+            httpOnly:true,
+            secure:true,
+            sameSite:'none',
+            expires:new Date(1),
+            
+        })
         res.json({loggedOut:true})
         return 
 
