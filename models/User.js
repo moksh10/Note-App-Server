@@ -4,8 +4,8 @@ const user_schema = mongoose.Schema({
     name:{
         type:String,
         required:[true,"Name can't be empty"],
-        minlength:[3,"Length of name should be more than 3"],
-        maxlength:[20,"Length of name should be less than 20"]
+        minlength:[1,"Username can't be empty"],
+        maxlength:[30,"Username length exceeded: 30"]
 
     },
     email:{
