@@ -41,7 +41,7 @@ exports.login = async (req,res) => {
             httpOnly:true,
             secure:true,
             sameSite:'none',
-            expires:new Date(Date.now() + process.env.JWT_EXPIRY_NUM),
+            expires:new Date(Date.now() + 60*60*1000),
             
         })
         
