@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const createToken = (id) =>{
-  return jwt.sign({id},process.env.JWT_PASSWORD,{ expiresIn:process.env.JWT_EXPIRY})
+  return jwt.sign({id},process.env.JWT_PASSWORD,{ expiresIn:60*60*1000})
 
 }
 
