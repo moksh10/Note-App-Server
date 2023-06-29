@@ -1,10 +1,9 @@
 require('./db/conn')
-const path = require('path')
-const mongoose = require('mongoose')
 const express = require('express')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const compression = require('compression')
+const audit = require('express-requests-logger')
 const app = express()
 const signupRoute = require('./routes/signupRoute')
 const loginRoute = require('./routes/loginRoute')
@@ -21,6 +20,7 @@ app.use(cors({
     
     
 }))
+app.use(audit())
 app.use(signupRoute)
 app.use(loginRoute)
 app.use(authRoute)
@@ -30,7 +30,7 @@ app.use("*",(req,res)=>{
     res.status(404).json({message:"No resource found"})
 
 })
-app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT || 5000,()=>{
     console.log("server started")
 
 })
